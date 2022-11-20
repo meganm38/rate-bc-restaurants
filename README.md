@@ -22,11 +22,6 @@
 ## Local Installation :croissant:	
 :cake: To run the Vue app and Express server locally on the same port:
   - Clone this repo.
-  - Change to the rate-bc-restaurants directory.
-    
-    ```
-    cd rate-bc-restaurants
-    ```
   - Install dependencies.
     
     ```sh
@@ -35,7 +30,7 @@
   - Change to the server directory.
    
     ```
-    cd rate-bc-restaurants/server
+    cd server/
     ```
   - Run the app.
    
