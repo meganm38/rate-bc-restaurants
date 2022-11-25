@@ -11,7 +11,7 @@
   </p>
 </div>
 
-[Rate](https://rate-bc-restaurants.herokuapp.com/) is a business review Web application for restaurants in British Columbia. It provides a one-stop platform for users to discover BC restaurants, make reservations, leave written reviews, star ratings, and photos of their experience with each restaurant they visit. Restaurant owners will also be able to add new listings to the application’s existing directory.
+[Rate](https://rate-bc-restaurants.herokuapp.com/) is a business review Web application for restaurants in British Columbia. It provides a one-stop platform for users to discover BC restaurants, make reservations, leave written reviews, star ratings, and photos of their experience with each restaurant they visit. Restaurant owners can also add new listings to the application’s existing directory and log in to see all reservations for restaurants they own.
 
 ## Technology Stack :popcorn:		
 :cheese: Front-end development: ![Vue](https://img.shields.io/badge/-Vue.js-pink?style=plastic&logo=vue.js)  ![Bootstrap](https://img.shields.io/badge/-Bootstrap-563D7C?style=plastic&logo=bootstrap)
@@ -42,11 +42,19 @@
 
 ## App Screenshoots :bagel:	
 ### Main page
+![alt text](https://github.com/meganm38/rate-bc-restaurants/blob/main/App%20Screenshoots/MainPage.png)
 
 ### Search results page
+![alt text](https://github.com/meganm38/rate-bc-restaurants/blob/main/App%20Screenshoots/SearchResults.png)
 
-### Restaurant Page
+### Restaurant page
+![alt text](https://github.com/meganm38/rate-bc-restaurants/blob/main/App%20Screenshoots/Restaurant.png)
 
-### Review Page
+### Review page
+![alt text](https://github.com/meganm38/rate-bc-restaurants/blob/main/App%20Screenshoots/Review.png)
 
-### Profile page
+### User profile page
+![alt text](https://github.com/meganm38/rate-bc-restaurants/blob/main/App%20Screenshoots/PersonalProfile.png)
+
+### Owner profile page
+![alt text](https://github.com/meganm38/rate-bc-restaurants/blob/main/App%20Screenshoots/OwnerProfile.png)
