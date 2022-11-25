@@ -27,7 +27,7 @@
         <div class="mt-3 mb-3"><a :href="rest.website" target="_blank">{{ rest.website }}</a></div>
 
         <button @click="toWriteReview" class="btn-brand">Write a review</button>
-        <button @click="openReservationModel" class="btn-brand">Make a rerservation</button>
+        <button @click="openReservationModel" class="btn-brand">Make a reservation</button>
         <b-modal centered v-model="showReservationModal"
                     @cancel="resetModal()" @hidden="resetModal()" hide-footer hide-header>
                     <template #default>
@@ -180,7 +180,8 @@ export default {
           const res = await ReservationDataService.findTables({
             date: format(date.value, 'yyyy-MM-dd'),
             time: time.value,
-            businessId: rest.value.businessId
+            businessId: rest.value.businessId,
+            capacity: numPeople.value
           })
           tables.value = res.data
 

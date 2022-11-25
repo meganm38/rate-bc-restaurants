@@ -2,37 +2,26 @@ import sequelize from '../models/index.js'
 import { QueryTypes } from 'sequelize'
 
 const createRestaurant = async(req, res) => {
+    console.log(req.body)
     try {
-        await sequelize.query(
-            'INSERT INTO "City" ("postalCode","city")\
-            VALUES (:postalCode, :city);', {
-                type:  QueryTypes.INSERT,
-                replacements: {
-                    postalCode: req.body.postalCode,
-                    city: req.body.city
-                }
-            })
-        
-        await sequelize.query(
-            'INSERT INTO "BusinessWebsite" ("businessName", "website")\
-            VALUES (:businessName, :website);', {
-                type:  QueryTypes.INSERT,
-                replacements: {
-                    postalCode: req.body.businessName,
-                    city: req.body.website
-                }
-            })
         const data = await sequelize.query(
-            'INSERT INTO "Restaurant" ("businessName","address","postalCode","ownerId")\
+            'INSERT INTO "City" ("postalCode","city")\
+            VALUES (:postalCode, :city);\
+            INSERT INTO "BusinessWebsite" ("businessName", "website")\
+            VALUES (:businessName, :website);\
+            INSERT INTO "Restaurant" ("businessName","address","postalCode","ownerId")\
             VALUES (:businessName, :address, :postalCode, :ownerId) RETURNING "businessId"', {
                 type:  QueryTypes.INSERT,
                 replacements: {
+                    postalCode: req.body.postalCode,
+                    city: req.body.city,
                     businessName: req.body.businessName,
                     address: req.body.address,
-                    postalCode: req.body.postalCode,
-                    ownerId: req.body.ownerId
+                    ownerId: req.body.ownerId,
+                    website: req.body.website
                 }
             })
+        
         res.send(data)
     } catch (err) {
         res.status(500).send({
@@ -261,8 +250,9 @@ const highestRateByTypeWithName = async (req, res) => {
       FROM "Restaurant" rs INNER JOIN "RestaurantType" rts ON rs."businessId" = rts."businessId"\
       INNER JOIN (SELECT MAX(r."stars") AS "stars", t."typeId"\
       FROM "Restaurant" r, "RestaurantType" rt, "Type" t\
-      WHERE r."businessId" = rt."businessId" AND rt."typeId" = t."typeId" AND strpos(lower(r."businessName"), :name) > 0\
-      GROUP BY t."typeId") ts ON ts."stars" = rs."stars" AND ts."typeId" = rts."typeId"', {
+      WHERE r."businessId" = rt."businessId" AND rt."typeId" = t."typeId"\
+      GROUP BY t."typeId") ts ON ts."stars" = rs."stars" AND ts."typeId" = rts."typeId"\
+      WHERE strpos(lower(rs."businessName"), :name) > 0', {
             type: QueryTypes.SELECT,
             replacements: {
                 name: req.params.name.toLowerCase()
@@ -321,8 +311,9 @@ const getHighestWithEnoughReviewsWithName = async (req, res) => {
       FROM "Restaurant" rs INNER JOIN "RestaurantType" rts ON rs."businessId" = rts."businessId"\
       INNER JOIN (SELECT MAX(r."stars") AS "stars", t."typeId"\
       FROM "Restaurant" r, "RestaurantType" rt, "Type" t\
-      WHERE r."businessId" = rt."businessId" AND rt."typeId" = t."typeId" AND strpos(lower(r."businessName"), :name) > 0\
-      GROUP BY t."typeId" HAVING sum("numReviews") > 4) ts ON ts."stars" = rs."stars" AND ts."typeId" = rts."typeId"', {
+      WHERE r."businessId" = rt."businessId" AND rt."typeId" = t."typeId"\
+      GROUP BY t."typeId" HAVING sum("numReviews") > 4) ts ON ts."stars" = rs."stars" AND ts."typeId" = rts."typeId"\
+      WHERE strpos(lower(rs."businessName"), :name) > 0', {
             type: QueryTypes.SELECT, 
             replacements: {
                 name: req.params.name.toLowerCase()
@@ -363,7 +354,7 @@ const getRestaurantsAcceptedAllPaymentWithName = async (req, res) => {
         const data = await sequelize.query(
             'SELECT *\
             FROM "Restaurant" rrr\
-            JOIN (SELECT DISTINCT rs."businessId"\
+            INNER JOIN (SELECT DISTINCT rs."businessId"\
             FROM "Restaurant" rs\
             WHERE NOT EXISTS \
             (SELECT po."optionId"\
@@ -434,7 +425,6 @@ const getFavoriteTypesOfRestaurantsWithName = async (req, res) => {
         })
     }
 }
-
 
 export { getAllRestaurants, 
         getRestaurantTypes, 

@@ -12,6 +12,12 @@ const ownerRouter = (app) => {
 
     router.get('/:ownerId/info', ownerController.findOwnerById)
 
+    router.get('/input/userSelection', ownerController.getUserSelection)
+
+    router.get('/:ownerId/restaurants', ownerController.getRestaurantByOwnerId)
+
+    router.get('/input/freeSearch', ownerController.getFreeSearch)
+
     app.use('/owners', router)
 }
 

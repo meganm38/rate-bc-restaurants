@@ -130,7 +130,7 @@
             currentOwner.value = JSON.parse(localStorage.getItem('currentOwner'))
           })
 
-          const handleLogout = async () => {
+          const handleLogout = () => {
               if (localStorage.getItem('currentUser')) {
                 localStorage.removeItem('currentUser')
                 currentUser.value = null
@@ -142,7 +142,7 @@
                 currentOwner.value = null
                 toast.show({title: 'Logged out successfully'}, {pos: 'top-right', variant: 'danger'})
               }
-              router.go()
+              router.push({name: 'home'})
           }
           const email = ref(null)
           const firstName = ref(null)
@@ -163,11 +163,8 @@
               const user = {
                 email: email.value, 
                 firstName: firstName.value, 
-                lastName: lastName.value
+                lastName: lastName.value,
               }
-
-              currentUser.value = user
-              localStorage.setItem('currentUser', JSON.stringify(user))
               resetModal('signup')
               toast.show({title: 'Signed up successfully'}, {pos: 'top-right', variant: 'danger'})
             } catch (error) {

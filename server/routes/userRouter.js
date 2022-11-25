@@ -16,7 +16,7 @@ const userRouter = (app) => {
 
     router.get('/:userId/reviews', userController.getReviewsByUserId)
 
-    router.put('/:userId/change/password', userController.updateUserPassWord)
+    router.put('/input/change/userInfo', userController.updateUserInfo)
 
     app.use('/users', router)
 }

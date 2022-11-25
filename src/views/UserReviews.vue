@@ -5,9 +5,11 @@
     <div class="user-info">
         <img src="../assets/avatar1.png" alt="">
         <div>
-            <h2>{{ user.firstName }} {{ user.lastName }}</h2>
-            <span>{{ user.numReviews }} Reviews</span>
+            <h2>{{ user.firstName }} {{ user.lastName }}
+                <span v-if="isCurrentUser" @click="changeUsernameOpen = !changeUsernameOpen" class="edit-pencil"><font-awesome-icon icon="fa-solid fa-pencil" /></span>
+            </h2>
             <p v-if="isCurrentUser" @click="changePasswordOpen = !changePasswordOpen" class="changeP">Change password</p>
+            <span>{{ user.numReviews }} Reviews</span>
         </div>
     </div> 
     <div class="reviews" v-if="reviews">
@@ -27,14 +29,14 @@
                             <input
                                 v-model="newPassword"
                                 trim
-                                placeholder="New Password"
+                                placeholder="New password"
                                 type="password"
                                 class="form-control"
                             >
                             <input :class="{invalid: matchError}"
                                 v-model="repeatNewPassword"
                                 trim
-                                placeholder="Repeat new Password"
+                                placeholder="Repeat new password"
                                 type="password"
                                 class="form-control"
                             >
@@ -43,6 +45,31 @@
                           <button class="btn-brand float-right" @click="resetModal">Cancel</button>
                         </div>                        
                     </template>
+    </b-modal>
+
+    <b-modal centered v-model="changeUsernameOpen" modal-lg
+        @cancel="resetModal" @hidden="resetModal" hide-footer hide-header>
+        <template #default>
+            <h2 class="modal-title">Change Username</h2>                
+                <input
+                    v-model="firstName"
+                    trim
+                    placeholder="First name"
+                    type="name"
+                    class="form-control"
+                >
+                <input
+                    v-model="lastName"
+                    trim
+                    placeholder="Last name"
+                    type="name"
+                    class="form-control"
+                >
+            <div class="w-100 button-box">
+                <button class="btn-brand float-right" @click="changeUsername">OK</button>
+                <button class="btn-brand float-right" @click="resetModal">Cancel</button>
+            </div>                        
+        </template>
     </b-modal>
   </div>
 </template>
@@ -57,6 +84,7 @@ import { ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { sha256 } from 'js-sha256'
 import {useToast} from 'bootstrap-vue-3'
+import router from '@/router'
 
 export default {
     components: { SingleReviewVue },
@@ -92,12 +120,6 @@ export default {
         const newPassword = ref(null)
         const repeatNewPassword = ref(null)
         const matchError = ref(false)
-        const resetModal = () => {
-            newPassword.value = null
-            repeatNewPassword.value = null
-            matchError.value = false
-            changePasswordOpen.value = false
-        }
         
         const toast = useToast()
 
@@ -107,12 +129,46 @@ export default {
                 matchError.value = true
                 return
             }
-            await UserDataService.updateUserPassWord({
+            await UserDataService.updateUserInfo({
                 userId: user.value.userId,
-                hashedPassword: sha256(newPassword.value)
+                attributes: [
+                    `"hashedPassword" = '${sha256(newPassword.value)}'`
+                ]
             })
             resetModal()
             toast.show({title: 'Password Updated'}, {pos: 'top-right', variant: 'danger'})
+        }
+
+        const changeUsernameOpen = ref(false)
+        const firstName = ref(null)
+        const lastName = ref(null)
+
+        const changeUsername = async () => {
+            await UserDataService.updateUserInfo({
+                userId: user.value.userId,
+                attributes: [
+                    `"firstName" = '${firstName.value}'`,
+                    `"lastName" = '${lastName.value}'`
+                ]
+            })
+            toast.show({title: 'Username Updated'}, {pos: 'top-right', variant: 'danger'})
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'))
+            currentUser.firstName = firstName.value
+            currentUser.lastName = lastName.value
+            localStorage.setItem('currentUser', JSON.stringify(currentUser))
+            resetModal()
+            router.go()
+        }
+
+        const resetModal = () => {
+            newPassword.value = null
+            repeatNewPassword.value = null
+            matchError.value = false
+            changePasswordOpen.value = false
+
+            changeUsernameOpen.value = false
+            firstName.value = null
+            lastName.value = null
         }
 
         const currentPage = ref(1)
@@ -138,43 +194,60 @@ export default {
             currentPage,
             perPage,
             reviewsEachPage,
-            changePassword
+            changePassword,
+            changeUsernameOpen,
+            firstName,
+            lastName,
+            changeUsername
         }
     }
 }
 </script>
 
 <style scoped>
-.personal-container {
-    font-family: 'Josefin Sans', sans-serif;
-    margin-bottom: 100px;
-}
+    .personal-container {
+        font-family: 'Josefin Sans', sans-serif;
+        margin-bottom: 100px;
+    }
 
-.user-info img {
-    height: 150px;
-    width: auto;
-}
+    .user-info img {
+        height: 150px;
+        width: auto;
+    }
 
-.user-info {
-    width: fit-content;
-    margin: 20px auto;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    align-items: center;
-    column-gap: 20px;
-    border-bottom: 1px dotted 	#B8B8B8;
-    padding-bottom: 20px;
-}
+    .user-info {
+        width: fit-content;
+        margin: 20px auto;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        align-items: center;
+        column-gap: 20px;
+        border-bottom: 1px dotted 	#B8B8B8;
+        padding-bottom: 20px;
+    }
 
-.changeP {
-    cursor: pointer;
-    margin-top: 15px;
-    color: rgba(195,144,127,1);
-}
+    .changeP {
+        cursor: pointer;
+        margin-top: 15px;
+    }
 
-.form-control {
+    .changeP:hover {
+        color: rgba(195,144,127,1);
+
+    }
+
+    .form-control {
         padding: 15px;
         margin-bottom: 20px;
         margin-top: 20px;
-      }
+    }
+
+    .edit-pencil {
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .edit-pencil:hover {
+        color: rgba(195,144,127,1);
+    }
 </style>

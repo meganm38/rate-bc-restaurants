@@ -38,16 +38,17 @@ const getFreeTable = async (req, res) => {
         const data = await sequelize.query(
             'SELECT DISTINCT rt."tableId"\
             FROM "RestaurantTable" rt\
-            WHERE rt."businessId" = :businessId\
+            WHERE rt."businessId" = :businessId AND rt.capacity >= :capacity\
             EXCEPT \
-            SELECT DISTINCT rt."tableId"\
-            FROM "Reservation" re, "RestaurantTable" rt\
-            WHERE re."tableId" = rt."tableId" AND re."date" = :date AND re."time" = :time\
-            AND rt."businessId" = :businessId AND rt."businessId" = re."businessId"', {
+            SELECT DISTINCT re."tableId"\
+            FROM "Reservation" re\
+            WHERE re."date" = :date AND re."time" = :time\
+            AND re."businessId" = :businessId', {
                 replacements: {
                     date: req.params.date,
                     time: req.params.time,
-                    businessId: req.params.businessId
+                    businessId: req.params.businessId,
+                    capacity: req.params.capacity
                 },
                 type: QueryTypes.SELECT
             })
