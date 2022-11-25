@@ -12,8 +12,8 @@ const createUser = async (req, res) => {
     try {
         const data = await sequelize.query(
             'INSERT INTO "RateUser" ("firstName","lastName","email","hashedPassword")\
-            VALUES (:firstName, :lastName, :email, :hashedPassword);', {
-                type:  QueryTypes.INSERT,
+            VALUES (:firstName, :lastName, :email, :hashedPassword) RETURNING "userId";', {
+                type: QueryTypes.INSERT,
                 replacements: {
                     firstName: user.firstName,
                     lastName: user.lastName,
@@ -113,15 +113,17 @@ const getReviewsByUserId = async (req, res) => {
     }
 }
 
-const updateUserPassWord = async (req, res) => {
+const updateUserInfo = async (req, res) => {
+    let query = 'UPDATE "RateUser" SET '
+    req.body.attributes.forEach((attribute) => {
+        query += attribute + ", "
+    })
+    query = query.slice(0, -2)
+    query += ` WHERE "userId" = ${req.body.userId}`
     try {
         const data = await sequelize.query(
-            'UPDATE "RateUser" SET "hashedPassword" = :hashedPassword WHERE "userId" = :userId', {
+            query, {
                 type: QueryTypes.UPDATE,
-                replacements: {
-                    userId: req.params.userId,
-                    hashedPassword: req.body.hashedPassword,
-                }
             })
         res.send(data)
     } catch (err) {
@@ -137,5 +139,5 @@ export { createUser,
          getReviewsByUserId, 
          updateUserReview,
          findUserById,
-         updateUserPassWord
+         updateUserInfo
     }

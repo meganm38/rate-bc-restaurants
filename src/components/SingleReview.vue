@@ -32,8 +32,8 @@
         <p>{{ review.content }}</p>
     </div>
     <div class="photo-row" v-if="review.photos">
-        <div class="photo-column" v-for="photo in review.photos" :key="photo.id">
-            <img class="photo" :src="photo.url" alt="">
+        <div class="photo-column" v-for="photo in review.photos" :key="photo.photoId">
+            <img @click="openPhoto(photo)" class="photo" :src="photo.url" alt="">
         </div>
     </div>
     <div class="review-btns" v-if="!byUser">
@@ -45,6 +45,15 @@
         <button :class="{ disabled: deleting }" @click="deleteReview" class="btn-brand">Delete review</button>
     </div>
   </div>
+    <b-modal centered v-model="openPhotoModal" size="lg"
+        @cancel="resetModal" @hidden="resetModal" hide-footer>
+        <template #default>
+            <b-carousel controls img-width="1024" no-animation v-if="modalImage">
+                <b-carousel-slide active :img-src="modalImage.url" />
+                <b-carousel-slide v-for="photo in remainingImages" :key="photo.photoId" :img-src="photo.url" />
+            </b-carousel>
+        </template>
+    </b-modal>
 </template>
 
 <script>
@@ -162,6 +171,19 @@ export default {
             }
         }
 
+        const openPhotoModal = ref(false)
+        const modalImage = ref(null)
+        const remainingImages = ref(null)
+        const openPhoto = (img) => {
+            openPhotoModal.value = true
+            modalImage.value = img
+            remainingImages.value = props.review.photos.filter(photo => photo.photoId != img.photoId)
+        }
+
+        const resetModal = () => {
+            openPhotoModal.value = false
+            modalImage.value = null
+        }
         return {
             usefulSelected,
             funnySelected,
@@ -171,7 +193,12 @@ export default {
             goRest,
             deleteReview,
             deleting,
-            toUserProfile
+            toUserProfile,
+            openPhotoModal,
+            openPhoto,
+            modalImage,
+            resetModal,
+            remainingImages
         }
     }
 }
@@ -252,7 +279,9 @@ export default {
     .photo {
         width: 100%;
         aspect-ratio: 1 / 1;
+        object-fit: cover;
         margin: 0 0 20px 20px;
+        cursor: pointer;
     }
 
     .photo-row {
@@ -264,4 +293,13 @@ export default {
         width: 20%;
         padding-right: 20px;
     }
+
+</style>
+
+<style>
+.carousel-inner > .carousel-item > img  {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
 </style>

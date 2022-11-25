@@ -54,8 +54,8 @@
                           <b-form-select-option value="4">Chinese</b-form-select-option>
                           <b-form-select-option value="5">Coffee & Tea</b-form-select-option>
                           <b-form-select-option value="6">Fastfood</b-form-select-option>
-                          <b-form-select-option value="6">French</b-form-select-option>
-                          <b-form-select-option value="6">Italian</b-form-select-option>                      
+                          <b-form-select-option value="7">French</b-form-select-option>
+                          <b-form-select-option value="8">Italian</b-form-select-option>                      
         </b-form-select>
     </b-form-group>
 
@@ -93,7 +93,7 @@
           ></b-form-input>
     </b-form-group>
 
-       <button @click="handleSignup" class="btn-brand float-right">Sign up</button>
+       <button :class="{disabled: creating}" @click="handleSignup" class="btn-brand float-right">Sign up</button>
         </form>
         
     </div>
@@ -123,23 +123,35 @@ export default {
       const toast = useToast()
 
       const router = useRouter()
+      const creating = ref(false)
 
       const handleSignup = async () => {
+        creating.value = true
         const owner = await OwnerDataService.createOwner({
           firstName: firstName.value,
           lastName: lastName.value,
           email: email.value,
           hashedPassword: sha256(password.value)
         })
+
         const res = await RestaurantDataService.createNewRestaurant({
-          ownerId: owner.data.ownerId,
+          ownerId: owner.data[0][0].ownerId,
           businessName: bName.value,
           address: address.value,
           postalCode: postalCode.value,
           website: website.value,
           city: city.value
         })
+        console.log(type.value)
+        await RestaurantDataService.createRestaurantType({
+          businessId: res.data[0][0].businessId,
+          typeId: type.value
+        })
+        creating.value = false
+        toast.show({title: 'Restaurant and owner created.'}, {pos: 'top-right', variant: 'danger'})
+        router.push({name: 'home'})
       }
+
 
       return {
         bName,
@@ -152,7 +164,8 @@ export default {
         email,
         password,
         handleSignup,
-        website
+        website,
+        creating
       }
     }
 }

@@ -3,7 +3,7 @@ import { baseurl } from './common-http.js'
 
 export default {
     async findTables(data) {
-        return await axios.get(baseurl + `reservations/${data.businessId}/freetables/${data.date}/${data.time}`)
+        return await axios.get(baseurl + `reservations/${data.businessId}/freetables/${data.date}/${data.time}/${data.capacity}`)
     },
 
     async createNewReservation(data) {

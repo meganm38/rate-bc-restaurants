@@ -75,6 +75,6 @@ export default {
     },
 
     async createRestaurantType(data) {
-        return axios.post(baseurl + 'restaurants/' + data.businessId + '/addType')
+        return axios.post(baseurl + 'restaurants/' + data.businessId + '/addType', data)
     }
 }

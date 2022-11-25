@@ -29,7 +29,7 @@ export default {
       return await axios.put(baseurl + 'users/' + data.email + '/reviews/update', {numReviews: data.numReviews})
     },
 
-    async updateUserPassWord(data) {
-      return await axios.put(baseurl + 'users/' + data.userId + '/change/password', {hashedPassword: data.hashedPassword})
+    async updateUserInfo(data) {
+      return await axios.put(baseurl + 'users/input/change/userInfo', data)
     }
 }

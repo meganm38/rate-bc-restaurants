@@ -6,7 +6,7 @@ const reservationRouter = (app) => {
 
     router.post("/add", reservationController.createReservation)
 
-    router.get('/:businessId/freetables/:date/:time', reservationController.getFreeTable)
+    router.get('/:businessId/freetables/:date/:time/:capacity', reservationController.getFreeTable)
 
     app.use('/reservations', router)
 }
