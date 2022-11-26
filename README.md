@@ -4,7 +4,7 @@
     <img src="https://github.com/meganm38/rate-bc-restaurants/blob/main/src/assets/logo.png?raw=true" alt="Logo" width="80" height="80">
   </a>
 
-<h1 align="center">Rate BC Restaurants :avocado: CPSC 304</h1>
+<h1 align="center">Rate BC Restaurants :avocado:</h1>
 
   <p align="center">
     <a href="https://rate-bc-restaurants.herokuapp.com/">View Demo</a>
@@ -12,6 +12,9 @@
 </div>
 
 [Rate](https://rate-bc-restaurants.herokuapp.com/) is a business review Web application for restaurants in British Columbia. It provides a one-stop platform for users to discover BC restaurants, make reservations, leave written reviews, star ratings, and photos of their experience with each restaurant they visit. Restaurant owners can also add new listings to the application’s existing directory and log in to see all reservations for restaurants they own.
+
+## Project Collabrators :cupcake:
+I worked on this project for UBC CPSC 304 with [MinZhang Si](https://github.com/lxxasi).
 
 ## Technology Stack :popcorn:		
 :cheese: Front-end development: ![Vue](https://img.shields.io/badge/-Vue.js-pink?style=plastic&logo=vue.js)  ![Bootstrap](https://img.shields.io/badge/-Bootstrap-563D7C?style=plastic&logo=bootstrap)
