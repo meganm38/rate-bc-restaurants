@@ -16,6 +16,8 @@
 ## Project Collabrators :cupcake:
 I worked on this project with [MinZhang Si](https://github.com/lxxasi).
 
+Disclaimer: This project is not meant to be duplicated for the purposes of graded coursework.
+
 ## Technology Stack :popcorn:		
 :cheese: Front-end development: ![Vue](https://img.shields.io/badge/-Vue.js-pink?style=plastic&logo=vue.js)  ![Bootstrap](https://img.shields.io/badge/-Bootstrap-563D7C?style=plastic&logo=bootstrap)
 
