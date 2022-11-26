@@ -14,7 +14,7 @@
 [Rate](https://rate-bc-restaurants.herokuapp.com/) is a business review Web application for restaurants in British Columbia. It provides a one-stop platform for users to discover BC restaurants, make reservations, leave written reviews, star ratings, and photos of their experience with each restaurant they visit. Restaurant owners can also add new listings to the application’s existing directory and log in to see all reservations for restaurants they own.
 
 ## Project Collabrators :cupcake:
-I worked on this project for UBC CPSC 304 with [MinZhang Si](https://github.com/lxxasi).
+I worked on this project with [MinZhang Si](https://github.com/lxxasi).
 
 ## Technology Stack :popcorn:		
 :cheese: Front-end development: ![Vue](https://img.shields.io/badge/-Vue.js-pink?style=plastic&logo=vue.js)  ![Bootstrap](https://img.shields.io/badge/-Bootstrap-563D7C?style=plastic&logo=bootstrap)
