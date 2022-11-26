@@ -4,7 +4,7 @@
     <img src="https://github.com/meganm38/rate-bc-restaurants/blob/main/src/assets/logo.png?raw=true" alt="Logo" width="80" height="80">
   </a>
 
-<h1 align="center">Rate BC Restaurants :avocado: </h1>
+<h1 align="center">Rate BC Restaurants :avocado: CPSC 304</h1>
 
   <p align="center">
     <a href="https://rate-bc-restaurants.herokuapp.com/">View Demo</a>
